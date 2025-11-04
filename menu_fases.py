@@ -1,7 +1,6 @@
 import os
 import WConio2
 
-
 #função para mudar o local do cursor
 def gotoxy(x, y):
     print(f"\033[{y};{x}H", end='', flush=True)
@@ -48,7 +47,29 @@ def DesenharTela(tela, y_nome_fase1, x_nome_fase1, y_elemento_central_fase1, x_e
                 tela[y][x+5] = "S"
             #Desenha a imagem de Hoag´s
             if y == y_elemento_central_fase2 and x == x_elemento_central_fase2:
+                #Bola do meio
                 tela[y][x] = "#"
+                tela[y-1][x] = "#"
+                tela[y-1][x-1] = "#"
+                tela[y-1][x+1] = "#"
+                tela[y][x+1] = "#"
+                tela[y][x+2] = "#"
+                tela[y+1][x] = "#"
+                tela[y+1][x-1] = "#"
+                tela[y+1][x+1] = "#"
+                tela[y][x-1] = "#"
+                tela[y][x-2] = "#"
+                #Anel
+                tela[y][x+10] = "*"
+                tela[y+1][x+10] = "*"
+                tela[y+2][x+9] = "*"
+                tela[y+3][x+7] = "*"
+                tela[y+4][x+5] = "*"
+                tela[y+5][x+2] = "*"
+                tela[y+5][x+1] = "*"
+                tela[y+5][x] = "*"
+                tela[y+5][x-1] = "*"
+                tela[y+5][x-2] = "*"
 
             #Desenha nome da terceira fase
             if y == y_nome_fase3 and x == x_nome_fase3:
@@ -120,7 +141,7 @@ x_elemento_central_fase1 = 40     #coordenada x do elemento central no desenho d
 y_nome_fase2 = 7
 x_nome_fase2 = 95
 y_elemento_central_fase2 = 20
-x_elemento_central_fase2 = 100
+x_elemento_central_fase2 = 98
 #coordenadas fase3
 y_nome_fase3 = 7
 x_nome_fase3 = 155
