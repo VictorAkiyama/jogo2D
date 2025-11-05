@@ -18,7 +18,7 @@ def LimparTela(tela):
             tela[y][x] = " "
 
 #função para desenhar na tela(matriz)
-def DesenharTela(tela, y_nome_fase1, x_nome_fase1, y_elemento_central_fase1, x_elemento_central_fase1, y_nome_fase2, x_nome_fase2, y_elemento_central_fase2, x_elemento_central_fase2, y_nome_fase3, x_nome_fase3, y_elemento_central_fase3, x_elemento_central_fase3, y_seta, x_seta):
+def DesenharTela(tela, y_nome_fase1, x_nome_fase1, y_primeiro_elemento_imagem_fase1, x_primeiro_elemento_imagem_fase1, y_nome_fase2, x_nome_fase2, y_elemento_central_fase2, x_elemento_central_fase2, y_nome_fase3, x_nome_fase3, y_elemento_central_fase3, x_elemento_central_fase3, y_seta, x_seta, imagem_fase1):
     for y in range(altura_y):
         for x in range(largura_x):
             #Desenha nome da primeira fase
@@ -34,8 +34,16 @@ def DesenharTela(tela, y_nome_fase1, x_nome_fase1, y_elemento_central_fase1, x_e
                 tela[y][x+8] = "E"
                 tela[y][x+9] = "A"
             #Desenha a imagem da Via Láctea
-            if y == y_elemento_central_fase1 and x == x_elemento_central_fase1:
-                tela[y][x] = "#"
+            if y == y_primeiro_elemento_imagem_fase1 and x == x_primeiro_elemento_imagem_fase1:
+                #TENTATIVA DE FAZER COM LOOP
+                #for y in range(y_primeiro_elemento_imagem_fase1, (y_primeiro_elemento_imagem_fase1 + 23)): #altura da imagem
+                    #for x in range(x_primeiro_elemento_imagem_fase1, (x_primeiro_elemento_imagem_fase1 + 51)): #largura da imagem
+                        #primeira fileira
+                        tela[y][x] = imagem_fase1[0]
+                        tela[y][x+1] = imagem_fase1[1]
+                        #segunda fileira
+                        tela[y+1][x] = imagem_fase1[2]
+                        tela[y+1][x+1] = imagem_fase1[3]
 
             #Desenha nome da segunda fase
             if y == y_nome_fase2 and x == x_nome_fase2:
@@ -48,17 +56,7 @@ def DesenharTela(tela, y_nome_fase1, x_nome_fase1, y_elemento_central_fase1, x_e
             #Desenha a imagem de Hoag´s
             if y == y_elemento_central_fase2 and x == x_elemento_central_fase2:
                 #Bola do meio
-                tela[y][x] = "#"
-                tela[y-1][x] = "#"
-                tela[y-1][x-1] = "#"
-                tela[y-1][x+1] = "#"
-                tela[y][x+1] = "#"
-                tela[y][x+2] = "#"
-                tela[y+1][x] = "#"
-                tela[y+1][x-1] = "#"
-                tela[y+1][x+1] = "#"
-                tela[y][x-1] = "#"
-                tela[y][x-2] = "#"
+                tela[y][x] = tela[y-1][x] = tela[y-1][x-1] = tela[y-1][x+1] = tela[y][x+1] = tela[y][x+2] = tela[y+1][x] = tela[y+1][x-1] = tela[y+1][x+1] = tela[y][x-1] = tela[y][x-2] = "#"
                 #Anel
                 tela[y][x+10] = "*"
                 tela[y+1][x+10] = "*"
@@ -135,8 +133,36 @@ largura_x = 200
 #coordenadas fase 1
 y_nome_fase1 = 7     #coordenada y inicial do primeiro item esquerdo do nome da primeira fase
 x_nome_fase1 = 35
-y_elemento_central_fase1 = 20     #coordenada y do elemento central no desenho dessa fase
-x_elemento_central_fase1 = 40     #coordenada x do elemento central no desenho dessa fase
+y_primeiro_elemento_imagem_fase1 = 9     #coordenada y do primeiro elemento da imagem
+x_primeiro_elemento_imagem_fase1 = 15     #coordenada x do primeiro elemento da imagem
+imagem_fase1 = [
+"A","B","C","D"]
+'''
+"                                  ██████            ",
+"                                ██████████          ",
+"                            █████████████████       ",
+"                      █████████████████████████     ",
+"                   ██████████████████████████████   ",
+"                 █████████████████████████████████  ",
+"              █████████████████████████████████████ ",
+"        █    ██████████████████████████████████████ ",
+"     ████   ████████████████████████████████████████",
+"    ████  ███████████████████████████   ████████████",
+"   ████   ███████████████████████████     ██████████",
+"   ████   ████████████████████████████    █████████ ",
+" ██████  ██████████████████████████████    ████████ ",
+" ███████ ███████████████###████████████    █████████",
+" ████████  ████████████#####████████████    ███████ ",
+" ███████     ███████████###█████████████    ██████  ",
+"██████████   ████████████████████████████   █████   ",
+"████████████      ███████████████████████   █████   ",
+"██████████████     ███████████████████      █████   ",
+" ████████████████████████████████████     █████     ",
+"  ████████████████████████████████      ██████      ",
+"    ████████████████████████████       ████         ",
+"         ███████████████████          ██            ",
+"            ██████████████                          "
+'''
 #coordenadas fase2
 y_nome_fase2 = 7
 x_nome_fase2 = 95
@@ -171,7 +197,7 @@ while True:
     LimparTela(tela)
 
     #== DESENHAR O MENU NA TELA ==
-    DesenharTela(tela, y_nome_fase1, x_nome_fase1, y_elemento_central_fase1, x_elemento_central_fase1, y_nome_fase2, x_nome_fase2, y_elemento_central_fase2, x_elemento_central_fase2, y_nome_fase3, x_nome_fase3, y_elemento_central_fase3, x_elemento_central_fase3, y_seta, x_seta)
+    DesenharTela(tela, y_nome_fase1, x_nome_fase1, y_primeiro_elemento_imagem_fase1, x_primeiro_elemento_imagem_fase1, y_nome_fase2, x_nome_fase2, y_elemento_central_fase2, x_elemento_central_fase2, y_nome_fase3, x_nome_fase3, y_elemento_central_fase3, x_elemento_central_fase3, y_seta, x_seta, imagem_fase1)
 
     #== COLOCANDO A TELA NO TERMINAL ==
     gotoxy(0,0)
