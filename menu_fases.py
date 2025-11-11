@@ -27,16 +27,10 @@ def menu_fases():
             for x in range(largura_x):
                 #Desenha nome da primeira fase
                 if y == y_nome_fase1 and x == x_nome_fase1:
-                    tela[y][x] = "V"
-                    tela[y][x+1] = "I"
-                    tela[y][x+2] = "A"
-
-                    tela[y][x+4] = "L"
-                    tela[y][x+5] = "Á"
-                    tela[y][x+6] = "C"
-                    tela[y][x+7] = "T"
-                    tela[y][x+8] = "E"
-                    tela[y][x+9] = "A"
+                    linhas = imagem_fase1nome.splitlines()
+                    for i1, linha in enumerate(linhas):
+                        for i2, elemento in enumerate(linha):
+                            tela[y + i1][x + i2] = elemento
                 #Desenha a imagem da Via Láctea
                 if y == y_primeiro_elemento_imagem_fase1 and x == x_primeiro_elemento_imagem_fase1:
                     linhas = imagem_fase1.splitlines()  #quebra a imagem em linhas e coloca em uma lista
@@ -46,12 +40,10 @@ def menu_fases():
 
                 #Desenha nome da segunda fase
                 if y == y_nome_fase2 and x == x_nome_fase2:
-                    tela[y][x] = "H"
-                    tela[y][x+1] = "O"
-                    tela[y][x+2] = "A"
-                    tela[y][x+3] = "G"
-                    tela[y][x+4] = "´"
-                    tela[y][x+5] = "S"
+                    linhas = imagem_fase2nome.splitlines()
+                    for i1, linha in enumerate(linhas):
+                        for i2, elemento in enumerate(linha):
+                            tela[y + i1][x + i2] = elemento
                 #Desenha a imagem de Hoag´s
                 if y == y_primeiro_elemento_imagem_fase2 and x == x_primeiro_elemento_imagem_fase2:
                     linhas = imagem_fase2.splitlines()
@@ -62,15 +54,10 @@ def menu_fases():
 
                 #Desenha nome da terceira fase
                 if y == y_nome_fase3 and x == x_nome_fase3:
-                    tela[y][x] = "A"
-                    tela[y][x+1] = "N"
-                    tela[y][x+2] = "D"
-                    tela[y][x+3] = "R"
-                    tela[y][x+4] = "Ô"
-                    tela[y][x+5] = "M"
-                    tela[y][x+6] = "E"
-                    tela[y][x+7] = "D"
-                    tela[y][x+8] = "A"
+                    linhas = imagem_fase3nome.splitlines()
+                    for i1, linha in enumerate(linhas):
+                        for i2, elemento in enumerate(linha):
+                            tela[y + i1][x + i2] = elemento
                 #Desenha a imagem de Andrômeda
                 if y == y_primeiro_elemento_imagem_fase3 and x == x_primeiro_elemento_imagem_fase3:
                     linhas = imagem_fase3.splitlines()
@@ -79,8 +66,12 @@ def menu_fases():
                             tela[y + i1][x + i2] = elemento
 
                 #Desenha seta
-                tela[y_seta][x_seta] = ">"
-                tela[y_seta][x_seta-1] = "-"
+                if y == y_seta and x == x_seta:
+                    #tela[y][x] = ">"
+                    linhas = imagemseta.splitlines()
+                    for i1, linha in enumerate(linhas):
+                        for i2, elemento in enumerate(linha):
+                            tela[y + i1][x + i2] = elemento
 
 
     #função para colocar a tela(matriz) no terminal
@@ -104,9 +95,9 @@ def menu_fases():
     #função para mudar as coordenadas da seta indicadora na tela(matriz)
     def MudaCoordenadaYSetaIndicadora(codigo, x_seta, x_nome_fase1, x_nome_fase3):
         if x_seta > x_nome_fase1 and (codigo == 65 or codigo == 97 or codigo == 75): #(A, a, seta para esquerda)
-            x_seta -= 72
-        elif x_seta < (x_nome_fase3 - 2) and (codigo == 68 or codigo == 100 or codigo == 77): #(D, d, seta para direita)
-            x_seta += 72
+            x_seta -= 50
+        elif x_seta < (x_nome_fase3 - 7) and (codigo == 68 or codigo == 100 or codigo == 77): #(D, d, seta para direita)
+            x_seta += 50
         return x_seta
 
 
@@ -122,14 +113,18 @@ def menu_fases():
     item = " "
 
     # espeficações tela
-    altura_y = 40
-    largura_x = 200
+    altura_y = 38
+    largura_x = 150
 
     #coordenadas fase 1
-    y_nome_fase1 = 7     #coordenada y inicial do primeiro item esquerdo do nome da primeira fase
-    x_nome_fase1 = 27
+    y_nome_fase1 = 4     #coordenada y inicial do primeiro item esquerdo do nome da primeira fase
+    x_nome_fase1 = 8
+    imagem_fase1nome = """
+    █ █ ▀█▀ █▀█   █   █▀█ █▀▀ ▀█▀ █▀▀ █▀█
+    ▀▄▀  █  █▀█   █   █▀█ █    █  █▀▀ █▀█
+     ▀  ▀▀▀ ▀ ▀   ▀▀▀ ▀ ▀ ▀▀▀  ▀  ▀▀▀ ▀ ▀""".strip("\n")
     y_primeiro_elemento_imagem_fase1 = 10     #coordenada y do primeiro elemento da imagem
-    x_primeiro_elemento_imagem_fase1 = 5    #coordenada x do primeiro elemento da imagem
+    x_primeiro_elemento_imagem_fase1 = 0    #coordenada x do primeiro elemento da imagem
     imagem_fase1 = """
                                       ■■■■■■            
                                     ■■■■■■■■■■          
@@ -157,10 +152,14 @@ def menu_fases():
                 ■■■■■■■■■■■■■■                          """.strip("\n") #remove os quebra linhas
 
     #coordenadas fase2
-    y_nome_fase2 = 7
-    x_nome_fase2 = 99
+    y_nome_fase2 = 4
+    x_nome_fase2 = 58
+    imagem_fase2nome = """
+    █ █ █▀█ █▀█ █▀▀ ▀ █▀▀   █▀█ █▀▄ ▀▀█  
+    █▀█ █ █ █▀█ █ █   ▀▀█   █ █ █▀▄   █  
+    ▀ ▀ ▀▀▀ ▀ ▀ ▀▀▀   ▀▀▀   ▀▀▀ ▀▀  ▀▀  ▀""".strip("\n")
     y_primeiro_elemento_imagem_fase2 = 18
-    x_primeiro_elemento_imagem_fase2 = 85
+    x_primeiro_elemento_imagem_fase2 = 56
     imagem_fase2 = """
                    ■■■■■■■■            
                ■■■■■■■■■■■■■■■■        
@@ -183,10 +182,14 @@ def menu_fases():
                  ■■■■■■■■              """.strip("\n")
 
     #coordenadas fase3
-    y_nome_fase3 = 7
-    x_nome_fase3 = 171
+    y_nome_fase3 = 4
+    x_nome_fase3 = 108
+    imagem_fase3nome = """
+    █▀█ █▀█ █▀▄ █▀▄ █▀█ █▄█ █▀▀ █▀▄ █▀█
+    █▀█ █ █ █ █ █▀▄ █ █ █ █ █▀▀ █ █ █▀█
+    ▀ ▀ ▀ ▀ ▀▀  ▀ ▀ ▀▀▀ ▀ ▀ ▀▀▀ ▀▀  ▀ ▀""".strip("\n")
     y_primeiro_elemento_imagem_fase3 = 14
-    x_primeiro_elemento_imagem_fase3 = 150
+    x_primeiro_elemento_imagem_fase3 = 96
     imagem_fase3 = """
                                             ■■■■■■
                                        ■■■■■■■■■■■
@@ -207,8 +210,12 @@ def menu_fases():
      ■■■■■                                        """.strip("\n")
 
     #coordenadas iniciais da Seta Indicadora no menu
-    y_seta = 7
-    x_seta = 25
+    y_seta = 4
+    x_seta = 1
+    imagemseta = """
+    ▀▄ 
+      █
+    ▄▀ """.strip("\n")
     # #estado:opção escolhida
     # state = ""
 
@@ -223,8 +230,8 @@ def menu_fases():
     codigo = 0
 
     while True:
-        altura_y = 40
-        largura_x = 200
+        altura_y = 38
+        largura_x = 150
 
         #== LIMPANDO TELA ==
         LimparTela(tela)
@@ -248,17 +255,17 @@ def menu_fases():
             break
 
             # se ENTER for apertado e a seta estiver em Via Láctea
-        if codigo == 13 and x_seta == (x_nome_fase1 - 2):
+        if codigo == 13 and x_seta == (x_nome_fase1 - 7):
             middleware.middleware("jogo")
             break
 
         # se ENTER or apertado e a seta estiver em Hoag´s
-        if codigo == 13 and x_seta == (x_nome_fase2 - 2):
+        if codigo == 13 and x_seta == (x_nome_fase2 - 7):
             middleware.middleware("jogo")
             break
 
         # se Enter for apertado e a seta estiver em Andrômeda
-        if codigo == 13 and x_seta == (x_nome_fase3 - 2):
+        if codigo == 13 and x_seta == (x_nome_fase3 - 7):
             middleware.middleware("jogo")
             break
 

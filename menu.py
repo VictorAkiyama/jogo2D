@@ -25,60 +25,38 @@ def menu():
             for x in range(largura_x):
                 #Desenha titulo
                 if y == y_titulo and x == esquerda_x_titulo:
-                    tela[y][x] = "S"
-                    tela[y][x+1] = "P"
-                    tela[y][x+2] = "A"
-                    tela[y][x+3] = "C"
-                    tela[y][x+4] = "E"
-
-                    tela[y][x+6] = "I"
-                    tela[y][x+7] = "N"
-                    tela[y][x+8] = "V"
-                    tela[y][x+9] = "A"
-                    tela[y][x+10] = "D"
-                    tela[y][x+11] = "E"
-                    tela[y][x+12] = "R"
-                    tela[y][x+13] = "S"
+                    linhas = imagemtitulo.splitlines()
+                    for i1, linha in enumerate(linhas):
+                        for i2, elemento in enumerate(linha):
+                            tela[y + i1][x + i2] = elemento
 
                 #Desenha continuar
                 if y == y_continuar and x == esquerda_x_continuar:
-                    tela[y][x] = "C"
-                    tela[y][x+1] = "O"
-                    tela[y][x+2] = "N"
-                    tela[y][x+3] = "T"
-                    tela[y][x+4] = "I"
-                    tela[y][x+5] = "N"
-                    tela[y][x+6] = "U"
-                    tela[y][x+7] = "A"
-                    tela[y][x+8] = "R"
+                    linhas = imagemcontinuar.splitlines()
+                    for i1, linha in enumerate(linhas):
+                        for i2, elemento in enumerate(linha):
+                            tela[y + i1][x + i2] = elemento
 
                 #Desenha novo jogo
                 if y == y_novojogo and x == esquerda_x_novojogo:
-                    tela[y][x] = "N"
-                    tela[y][x+1] = "O"
-                    tela[y][x+2] = "V"
-                    tela[y][x+3] = "O"
-
-
-                    tela[y][x+5] = "J"
-                    tela[y][x+6] = "O"
-                    tela[y][x+7] = "G"
-                    tela[y][x+8] = "O"
+                    linhas = imagemnovojogo.splitlines()
+                    for i1, linha in enumerate(linhas):
+                        for i2, elemento in enumerate(linha):
+                            tela[y + i1][x + i2] = elemento
             
                 #Desenha melhorias
                 if y == y_melhorias and x == esquerda_x_melhorias:
-                    tela[y][x] = "M"
-                    tela[y][x+1] = "E"
-                    tela[y][x+2] = "L"
-                    tela[y][x+3] = "H"
-                    tela[y][x+4] = "O"
-                    tela[y][x+5] = "R"
-                    tela[y][x+6] = "I"
-                    tela[y][x+7] = "A"
-                    tela[y][x+8] = "S"
+                    linhas = imagemmelhorias.splitlines()
+                    for i1, linha in enumerate(linhas):
+                        for i2, elemento in enumerate(linha):
+                            tela[y + i1][x + i2] = elemento
             
                 #Desenha seta
-                tela[y_seta][x_seta] = ">"
+                if y == y_seta and x == x_seta:
+                    linhas = imagemseta.splitlines()
+                    for i1, linha in enumerate(linhas):
+                        for i2, elemento in enumerate(linha):
+                            tela[y + i1][x + i2] = elemento
 
 
     #função para colocar a tela(matriz) no terminal
@@ -102,9 +80,9 @@ def menu():
     #função para mudar as coordenadas da seta indicadora na tela(matriz)
     def MudaCoordenadaYSetaIndicadora(codigo, y_seta, x_seta, y_continuar, y_melhorias):
         if y_seta > y_continuar and (codigo == 119 or codigo == 87 or codigo == 72):
-            y_seta -= 2
+            y_seta -= 5
         elif y_seta < y_melhorias and (codigo == 115 or codigo == 83 or codigo == 80):
-            y_seta += 2
+            y_seta += 5
         return y_seta
     
 
@@ -120,24 +98,57 @@ def menu():
     item = " "
 
     # espeficações tela
-    altura_y = 40
-    largura_x = 200
+    altura_y = 38
+    largura_x = 150
 
     #coordenadas iniciais titulo
-    y_titulo = 7     #coordenada y inicial do primeiro item esquerdo do nome do jogo
-    esquerda_x_titulo = 18     #coordenada x inicial da primeiro item esquerdo do nome do jogo
+    y_titulo = 4     #coordenada y inicial do primeiro item esquerdo do nome do jogo
+    esquerda_x_titulo = 35     #coordenada x inicial da primeiro item esquerdo do nome do jogo
+    imagemtitulo = """
+      ██████╗  █████╗ ████████╗██████╗ ██╗   ██╗██╗     ██╗  ██╗ █████╗    
+      ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║   ██║██║     ██║  ██║██╔══██╗   
+      ██████╔╝███████║   ██║   ██████╔╝██║   ██║██║     ███████║███████║   
+      ██╔═══╝ ██╔══██║   ██║   ██╔══██╗██║   ██║██║     ██╔══██║██╔══██║   
+      ██║     ██║  ██║   ██║   ██║  ██║╚██████╔╝███████╗██║  ██║██║  ██║   
+      ╚═╝     ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝   
+
+     ██████╗  █████╗ ██╗      █████╗  ██████╗████████╗██╗ ██████╗ █████╗ 
+    ██╔════╝ ██╔══██╗██║     ██╔══██╗██╔════╝╚══██╔══╝██║██╔════╝██╔══██╗
+    ██║  ███╗███████║██║     ███████║██║        ██║   ██║██║     ███████║
+    ██║   ██║██╔══██║██║     ██╔══██║██║        ██║   ██║██║     ██╔══██║
+    ╚██████╔╝██║  ██║███████╗██║  ██║╚██████╗   ██║   ██║╚██████╗██║  ██║
+     ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝╚═╝  ╚═╝ """.strip("\n")
     #coordenadas iniciais CONTINUAR
-    y_continuar = 9
-    esquerda_x_continuar = 21
+    y_continuar = 22
+    esquerda_x_continuar = 52
+    imagemcontinuar = """
+    ░█▀▀░█▀█░█▀█░▀█▀░▀█▀░█▀█░█░█░█▀█░█▀▄
+    ░█░░░█░█░█░█░░█░░░█░░█░█░█░█░█▀█░█▀▄
+    ░▀▀▀░▀▀▀░▀░▀░░▀░░▀▀▀░▀░▀░▀▀▀░▀░▀░▀░▀
+    """.strip("\n")
     #coordenadas iniciais NOVO JOGO
-    y_novojogo = 11
-    esquerda_x_novojogo = 21
+    y_novojogo = 27
+    esquerda_x_novojogo = 52
+    imagemnovojogo = """
+    ░█▀█░█▀█░█░█░█▀█░░░▀▀█░█▀█░█▀▀░█▀█
+    ░█░█░█░█░▀▄▀░█░█░░░░░█░█░█░█░█░█░█
+    ░▀░▀░▀▀▀░░▀░░▀▀▀░░░▀▀░░▀▀▀░▀▀▀░▀▀▀
+    """.strip("\n")
     #coordenadas iniciais MELHORIAS
-    y_melhorias = 13
-    esquerda_x_melhorias = 21
+    y_melhorias = 32
+    esquerda_x_melhorias = 52
+    imagemmelhorias = """
+    ░█▄█░█▀▀░█░░░█░█░█▀█░█▀▄░▀█▀░█▀█░█▀▀
+    ░█░█░█▀▀░█░░░█▀█░█░█░█▀▄░░█░░█▀█░▀▀█
+    ░▀░▀░▀▀▀░▀▀▀░▀░▀░▀▀▀░▀░▀░▀▀▀░▀░▀░▀▀▀
+    """.strip("\n")
     #coordenadas iniciais da Seta Indicadora no menu
-    y_seta = 9
-    x_seta = 19
+    y_seta = 22
+    x_seta = 44
+    imagemseta = """
+    ▀▄ 
+      █
+    ▄▀ """.strip("\n")
     # #estado:opção escolhida
     # state = ""
 
@@ -152,8 +163,8 @@ def menu():
     codigo = 0
 
     while True:
-        altura_y = 35
-        largura_x = 50
+        altura_y = 38
+        largura_x = 150
 
         #== LIMPANDO TELA ==
         LimparTela(tela)
@@ -177,16 +188,16 @@ def menu():
             break
 
         # se ENTER for apertado e a seta estiver em CONTINUAR
-        if codigo == 13 and y_seta == 9:
+        if codigo == 13 and y_seta == 22:
             middleware("menu_fases")
             break
 
         # se ENTER or apertado e a seta estiver em NOVO JOGO
-        if codigo == 13 and y_seta == 11:
+        if codigo == 13 and y_seta == 27:
             middleware("menu_fases")
             break
 
-        if codigo == 13 and y_seta == 13:
+        if codigo == 13 and y_seta == 32:
             middleware("menu_melhorias")
             break
 

@@ -6,8 +6,8 @@ import menu
 def jogo():
     tela = []
     cont = 0
-    largura = 200
-    altura = 40
+    largura = 160
+    altura = 38
 
     aviao_y = altura - 1
     aviao_x = largura // 2
