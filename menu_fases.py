@@ -1,7 +1,8 @@
 import os
 import WConio2
 import menu
-import middleware
+import trocar_tela
+import sprites
 
 def menu_fases():
     #função para mudar o local do cursor
@@ -22,7 +23,7 @@ def menu_fases():
 
     #função para desenhar na tela(matriz)
     def DesenharTela(tela, y_nome_fase1, x_nome_fase1, y_primeiro_elemento_imagem_fase1, x_primeiro_elemento_imagem_fase1, y_nome_fase2, x_nome_fase2, y_primeiro_elemento_imagem_fase2, x_primeiro_elemento_imagem_fase2, y_nome_fase3, x_nome_fase3, y_primeiro_elemento_imagem_fase3, x_primeiro_elemento_imagem_fase3, y_seta, x_seta):
-        print("A, a, seta esquerda\nD, d, seta direita\nEsc para voltar\nEnter para selecionar")
+        print("A, a, seta esquerda\tD, d, seta direita\nEsc para voltar\t\tEnter para selecionar")
         for y in range(altura_y):
             for x in range(largura_x):
                 #Desenha nome da primeira fase
@@ -67,11 +68,11 @@ def menu_fases():
 
                 #Desenha seta
                 if y == y_seta and x == x_seta:
-                    #tela[y][x] = ">"
                     linhas = imagemseta.splitlines()
                     for i1, linha in enumerate(linhas):
                         for i2, elemento in enumerate(linha):
                             tela[y + i1][x + i2] = elemento
+
 
 
     #função para colocar a tela(matriz) no terminal
@@ -119,103 +120,30 @@ def menu_fases():
     #coordenadas fase 1
     y_nome_fase1 = 4     #coordenada y inicial do primeiro item esquerdo do nome da primeira fase
     x_nome_fase1 = 8
-    imagem_fase1nome = """
-    █ █ ▀█▀ █▀█   █   █▀█ █▀▀ ▀█▀ █▀▀ █▀█
-    ▀▄▀  █  █▀█   █   █▀█ █    █  █▀▀ █▀█
-     ▀  ▀▀▀ ▀ ▀   ▀▀▀ ▀ ▀ ▀▀▀  ▀  ▀▀▀ ▀ ▀""".strip("\n")
     y_primeiro_elemento_imagem_fase1 = 10     #coordenada y do primeiro elemento da imagem
     x_primeiro_elemento_imagem_fase1 = 0    #coordenada x do primeiro elemento da imagem
-    imagem_fase1 = """
-                                      ■■■■■■            
-                                    ■■■■■■■■■■          
-                                ■■■■■■■■■■■■■■■■■       
-                          ■■■■■■■■■■■■■■■■■■■■■■■■■     
-                       ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
-                     ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-                  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-            ■    ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-         ■■■■   ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-        ■■■■  ■■■■■■■■■■■■■■■■■■■■■■■■■■■   ■■■■■■■■■■■■
-       ■■■■   ■■■■■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■■■■■■
-       ■■■■   ■■■■■■■■■■■■■█████■■■■■■■■■■    ■■■■■■■■■ 
-     ■■■■■■  ■■■■■■■■■■■■■███████■■■■■■■■■■    ■■■■■■■■ 
-     ■■■■■■■ ■■■■■■■■■■■■■███████■■■■■■■■■■    ■■■■■■■■■
-     ■■■■■■■■  ■■■■■■■■■■■■█████■■■■■■■■■■■■    ■■■■■■■ 
-     ■■■■■■■     ■■■■■■■■■■■■■■■■■■■■■■■■■■■    ■■■■■■  
-    ■■■■■■■■■■   ■■■■■■■■■■■■■■■■■■■■■■■■■■■■   ■■■■■   
-    ■■■■■■■■■■■■      ■■■■■■■■■■■■■■■■■■■■■■■   ■■■■■   
-    ■■■■■■■■■■■■■■     ■■■■■■■■■■■■■■■■■■■      ■■■■■   
-     ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     ■■■■■     
-      ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■      ■■■■■■      
-        ■■■■■■■■■■■■■■■■■■■■■■■■■■■■       ■■■■         
-             ■■■■■■■■■■■■■■■■■■■          ■■            
-                ■■■■■■■■■■■■■■                          """.strip("\n") #remove os quebra linhas
+    imagem_fase1nome = sprites.get_fase1nome()
+    imagem_fase1 = sprites.get_fase1()
 
     #coordenadas fase2
     y_nome_fase2 = 4
     x_nome_fase2 = 58
-    imagem_fase2nome = """
-    █ █ █▀█ █▀█ █▀▀ ▀ █▀▀   █▀█ █▀▄ ▀▀█  
-    █▀█ █ █ █▀█ █ █   ▀▀█   █ █ █▀▄   █  
-    ▀ ▀ ▀▀▀ ▀ ▀ ▀▀▀   ▀▀▀   ▀▀▀ ▀▀  ▀▀  ▀""".strip("\n")
     y_primeiro_elemento_imagem_fase2 = 18
     x_primeiro_elemento_imagem_fase2 = 56
-    imagem_fase2 = """
-                   ■■■■■■■■            
-               ■■■■■■■■■■■■■■■■        
-            ■■■■■■■■■■■■■■■■■■■■■■     
-          ■■■■■■■■■■■   ■■■■■■■■■■■    
-        ■■■■■■■              ■■■■■■■■  
-        ■■■■■■                 ■■■■■■  
-      ■■■■■■                     ■■■■■ 
-      ■■■■■                      ■■■■■■
-     ■■■■■         █████         ■■■■■■
-    ■■■■■         ███████         ■■■■■
-    ■■■■■■        ███████        ■■■■■■
-    ■■■■■■         █████         ■■■■■ 
-     ■■■■■■■                     ■■■■■ 
-       ■■■■■■                  ■■■■■■  
-       ■■■■■■■■              ■■■■■■■   
-         ■■■■■■■■      ■■■■■■■■■■■     
-           ■■■■■■■■■■■■■■■■■■■■■       
-             ■■■■■■■■■■■■■■■■■         
-                 ■■■■■■■■              """.strip("\n")
+    imagem_fase2nome = sprites.get_fase2nome()
+    imagem_fase2 = sprites.get_fase2()
 
     #coordenadas fase3
     y_nome_fase3 = 4
     x_nome_fase3 = 108
-    imagem_fase3nome = """
-    █▀█ █▀█ █▀▄ █▀▄ █▀█ █▄█ █▀▀ █▀▄ █▀█
-    █▀█ █ █ █ █ █▀▄ █ █ █ █ █▀▀ █ █ █▀█
-    ▀ ▀ ▀ ▀ ▀▀  ▀ ▀ ▀▀▀ ▀ ▀ ▀▀▀ ▀▀  ▀ ▀""".strip("\n")
     y_primeiro_elemento_imagem_fase3 = 14
     x_primeiro_elemento_imagem_fase3 = 96
-    imagem_fase3 = """
-                                            ■■■■■■
-                                       ■■■■■■■■■■■
-                                  ■■■■■■■      ■■■
-                              ■■■■■■■         ■■■ 
-                          ■■■■■ ■■■■■■■■■■   ■■■  
-                       ■■■ ■■■■■■       ■■■■■■■   
-                    ■■■■■■■■            ■■■■      
-                 ■■■ ■■■ ████        ■■■■■■       
-              ■■■■■■■   ██████   ■■■■■■           
-           ■■■ ■■■       ████ ■■■■■■■             
-          ■■  ■■           ■■■ ■■■                
-        ■■■   ■■       ■■■■■■■■■                  
-       ■■■     ■■■■ ■■■■■■■■                      
-     ■■■■        ■■■■■                            
-    ■■■■  ■■■■■■■■                                
-    ■■■■■■■■■                                     
-     ■■■■■                                        """.strip("\n")
-
+    imagem_fase3nome = sprites.get_fase3nome()
+    imagem_fase3 = sprites.get_fase3()
     #coordenadas iniciais da Seta Indicadora no menu
     y_seta = 4
     x_seta = 1
-    imagemseta = """
-    ▀▄ 
-      █
-    ▄▀ """.strip("\n")
+    imagemseta = sprites.get_seta()
     # #estado:opção escolhida
     # state = ""
 
@@ -256,17 +184,17 @@ def menu_fases():
 
             # se ENTER for apertado e a seta estiver em Via Láctea
         if codigo == 13 and x_seta == (x_nome_fase1 - 7):
-            middleware.middleware("jogo")
+            trocar_tela.trocar_tela("jogo")
             break
 
         # se ENTER or apertado e a seta estiver em Hoag´s
         if codigo == 13 and x_seta == (x_nome_fase2 - 7):
-            middleware.middleware("jogo")
+            trocar_tela.trocar_tela("jogo")
             break
 
         # se Enter for apertado e a seta estiver em Andrômeda
         if codigo == 13 and x_seta == (x_nome_fase3 - 7):
-            middleware.middleware("jogo")
+            trocar_tela.trocar_tela("jogo")
             break
 
         #== MUDA A POSICAO DA SETA SEGUNDO INPUT ==
