@@ -1,6 +1,8 @@
 import os
 import WConio2
-from middleware import middleware
+import sprites
+import trocar_tela
+import salvar
 
 def menu():
     #função para mudar o local do cursor
@@ -51,6 +53,13 @@ def menu():
                         for i2, elemento in enumerate(linha):
                             tela[y + i1][x + i2] = elemento
             
+                #Desenhar salvar
+                if y == y_salvar and x == esquerda_x_salvar:
+                    linhas = imagemsalvar.splitlines()
+                    for i1, linha in enumerate(linhas):
+                        for i2, elemento in enumerate(linha):
+                            tela[y + i1][x + i2] = elemento
+
                 #Desenha seta
                 if y == y_seta and x == x_seta:
                     linhas = imagemseta.splitlines()
@@ -81,7 +90,7 @@ def menu():
     def MudaCoordenadaYSetaIndicadora(codigo, y_seta, x_seta, y_continuar, y_melhorias):
         if y_seta > y_continuar and (codigo == 119 or codigo == 87 or codigo == 72):
             y_seta -= 5
-        elif y_seta < y_melhorias and (codigo == 115 or codigo == 83 or codigo == 80):
+        elif y_seta < y_salvar and (codigo == 115 or codigo == 83 or codigo == 80):
             y_seta += 5
         return y_seta
     
@@ -102,53 +111,29 @@ def menu():
     largura_x = 150
 
     #coordenadas iniciais titulo
-    y_titulo = 4     #coordenada y inicial do primeiro item esquerdo do nome do jogo
+    y_titulo = 1     #coordenada y inicial do primeiro item esquerdo do nome do jogo
     esquerda_x_titulo = 35     #coordenada x inicial da primeiro item esquerdo do nome do jogo
-    imagemtitulo = """
-      ██████╗  █████╗ ████████╗██████╗ ██╗   ██╗██╗     ██╗  ██╗ █████╗    
-      ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║   ██║██║     ██║  ██║██╔══██╗   
-      ██████╔╝███████║   ██║   ██████╔╝██║   ██║██║     ███████║███████║   
-      ██╔═══╝ ██╔══██║   ██║   ██╔══██╗██║   ██║██║     ██╔══██║██╔══██║   
-      ██║     ██║  ██║   ██║   ██║  ██║╚██████╔╝███████╗██║  ██║██║  ██║   
-      ╚═╝     ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝   
-
-     ██████╗  █████╗ ██╗      █████╗  ██████╗████████╗██╗ ██████╗ █████╗ 
-    ██╔════╝ ██╔══██╗██║     ██╔══██╗██╔════╝╚══██╔══╝██║██╔════╝██╔══██╗
-    ██║  ███╗███████║██║     ███████║██║        ██║   ██║██║     ███████║
-    ██║   ██║██╔══██║██║     ██╔══██║██║        ██║   ██║██║     ██╔══██║
-    ╚██████╔╝██║  ██║███████╗██║  ██║╚██████╗   ██║   ██║╚██████╗██║  ██║
-     ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝╚═╝  ╚═╝ """.strip("\n")
+    imagemtitulo = sprites.get_titulo()
     #coordenadas iniciais CONTINUAR
-    y_continuar = 22
+    y_continuar = 18
     esquerda_x_continuar = 52
-    imagemcontinuar = """
-    ░█▀▀░█▀█░█▀█░▀█▀░▀█▀░█▀█░█░█░█▀█░█▀▄
-    ░█░░░█░█░█░█░░█░░░█░░█░█░█░█░█▀█░█▀▄
-    ░▀▀▀░▀▀▀░▀░▀░░▀░░▀▀▀░▀░▀░▀▀▀░▀░▀░▀░▀
-    """.strip("\n")
+    imagemcontinuar = sprites.get_continuar()
     #coordenadas iniciais NOVO JOGO
-    y_novojogo = 27
+    y_novojogo = 23
     esquerda_x_novojogo = 52
-    imagemnovojogo = """
-    ░█▀█░█▀█░█░█░█▀█░░░▀▀█░█▀█░█▀▀░█▀█
-    ░█░█░█░█░▀▄▀░█░█░░░░░█░█░█░█░█░█░█
-    ░▀░▀░▀▀▀░░▀░░▀▀▀░░░▀▀░░▀▀▀░▀▀▀░▀▀▀
-    """.strip("\n")
+    imagemnovojogo = sprites.get_novojogo()
     #coordenadas iniciais MELHORIAS
-    y_melhorias = 32
+    y_melhorias = 28
     esquerda_x_melhorias = 52
-    imagemmelhorias = """
-    ░█▄█░█▀▀░█░░░█░█░█▀█░█▀▄░▀█▀░█▀█░█▀▀
-    ░█░█░█▀▀░█░░░█▀█░█░█░█▀▄░░█░░█▀█░▀▀█
-    ░▀░▀░▀▀▀░▀▀▀░▀░▀░▀▀▀░▀░▀░▀▀▀░▀░▀░▀▀▀
-    """.strip("\n")
+    imagemmelhorias = sprites.get_melhorias()
+    #coordenadas iniciais SALVAR
+    y_salvar = 33
+    esquerda_x_salvar = 52
+    imagemsalvar = sprites.get_salvar()
     #coordenadas iniciais da Seta Indicadora no menu
-    y_seta = 22
+    y_seta = 18
     x_seta = 44
-    imagemseta = """
-    ▀▄ 
-      █
-    ▄▀ """.strip("\n")
+    imagemseta = sprites.get_seta()
     # #estado:opção escolhida
     # state = ""
 
@@ -188,17 +173,21 @@ def menu():
             break
 
         # se ENTER for apertado e a seta estiver em CONTINUAR
-        if codigo == 13 and y_seta == 22:
-            middleware("menu_fases")
+        if codigo == 13 and y_seta == y_continuar:
+            trocar_tela.trocar_tela("menu_fases")
             break
 
         # se ENTER or apertado e a seta estiver em NOVO JOGO
-        if codigo == 13 and y_seta == 27:
-            middleware("menu_fases")
+        if codigo == 13 and y_seta == y_novojogo:
+            trocar_tela.trocar_tela("menu_fases")
             break
 
-        if codigo == 13 and y_seta == 32:
-            middleware("menu_melhorias")
+        if codigo == 13 and y_seta == y_melhorias:
+            trocar_tela.trocar_tela("menu_melhorias")
+            break
+
+        if codigo == 13 and y_seta == y_salvar:
+            #SALVA
             break
 
         #== MUDA A POSICAO DA SETA SEGUNDO INPUT ==
