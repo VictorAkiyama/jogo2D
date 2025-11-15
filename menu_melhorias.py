@@ -1,5 +1,5 @@
 import os
-import WConio2
+import WConio2 # pip install WConio2
 import trocar_tela
 import sprites
 import status
@@ -47,16 +47,10 @@ def menu_melhorias():
 
                 #Desenha seta
                 if y == y_seta and x == x_seta:
-                    mostrar_sprite(sprites.get_seta(),x_seta,y_seta)
+                    mostrar_sprite(sprites.get_seta_upgrades(),x_seta,y_seta)
 
                 if y == y_descricao and x == x_descricao:
                     mostrar_sprite(["↑, w ou W e ↓,s ou S para navegação."],x_descricao,y_descricao)
-                #desenha os limites da tela
-                # tela[y][largura_x - 1] = "*"
-                # tela[y][0] = "*"
-                # tela[altura_y - 1][x] = "*"
-                # tela[0][x] = "*"                
-
 
     #Função para colocar a tela(matriz) no terminal
     def MostrarTela(tela):
@@ -113,11 +107,11 @@ def menu_melhorias():
 
         if atributo == "voltar": texto = "Volta para o menu principal.                        "
         elif lvl == lista[1]:
-           texto = texto.replace("&","Custa 5R$.")
+           texto = texto.replace("&",f"Custa {custo_upg_1}R$.")
         elif lvl == lista[2]:
-           texto = texto.replace("&","Custa 10R$.")
+           texto = texto.replace("&",f"Custa {custo_upg_2}R$.")
         elif lvl == lista[3]:
-           texto = texto.replace("&","Nível Máximo")
+           texto = texto.replace("&", "Nível Máximo.")
 
         
         print(texto)
@@ -129,7 +123,7 @@ def menu_melhorias():
         if valor == vida_lvl[1]: custo = custo_upg_1
         elif valor == vida_lvl[2]: custo = custo_upg_2
         elif valor == vida_lvl[3]: return moedas, valor
-        if moedas > custo:
+        if moedas >= custo:
             moedas -= custo
             valor += 1
         return moedas,valor
@@ -182,8 +176,8 @@ def menu_melhorias():
     y_voltar, x_voltar = [altura_y - 5,60]
 
     #Valores como parâmetro (soft coding)
-    custo_upg_1 = 5
-    custo_upg_2 = 10
+    custo_upg_1 = 4
+    custo_upg_2 = 8
     vida = status.vida
     dano = status.dano
     vel_tiro = status.lerdeza_tiro
@@ -218,20 +212,21 @@ def menu_melhorias():
 
         #== CAPTURA INPUT DO JOGADOR ==
         codigo = CapturaInput(codigo)
-
+        
+        # se ESC for pressionado
         if codigo == 27: 
-            os.system("cls")
+            trocar_tela.trocar_tela("menu")
             break
         # se a seta estiver em VIDA
         if y_seta == y_vida + 1:
-            descricao("vida",vida)
+            descricao("vida",status.vida)
             # e ENTER for apertado
             if codigo == 13:
                 status.moedas, status.vida = melhorar_vida(status.moedas)
 
         # se a seta estiver em DANO
         if y_seta == y_dano + 1:
-            descricao("dano",dano)
+            descricao("dano",status.dano)
             if codigo == 13:
                 status.moedas, status.dano = melhorar_dano(status.moedas)
 
@@ -245,9 +240,8 @@ def menu_melhorias():
         if y_seta == y_voltar:
             descricao("voltar")
             if codigo == 13:
-                trocar_tela.trocar_tela("menu")
-
-        print(status.vida,status.dano,status.lerdeza_tiro)
+                trocar_tela.trocar_tela("menu_fases")
+                break
 
         #== MUDA A POSICAO DA SETA SEGUNDO INPUT ==
         y_seta = MudaCoordenadaYSetaIndicadora(codigo, y_seta, y_vida, y_voltar)

@@ -3,6 +3,8 @@ import WConio2  # pip install WConio2
 import trocar_tela
 import sprites
 import status
+import fases
+import salvar
 
 def jogo():
     tela = []
@@ -25,8 +27,6 @@ def jogo():
     vida_inimigos_horizontais = []
     direcao_horizontais = [1, 1, 1, 1]  
     tiros_inimigos = []  # tiros inimigos
-    fase = status.fase
-    onda = status.onda
 
     # Criar função para tirar o pisca-pisca
     def gotoxy(x, y):
@@ -64,7 +64,7 @@ def jogo():
                 elif [x, y] in dinheiros:
                     mostrar_sprite(sprites.get_dinheiro(), x, y)
 
-    #são enviados parâmetros de coordenada, largura e altura de dois elementos para retornar True em caso de colisão
+    #São enviados parâmetros de coordenada, largura e altura de dois elementos para retornar True em caso de colisão
     def colide_elementos(sprite1_x, sprite1_y, largura1, altura1, sprite2_x, sprite2_y, largura2, altura2):
         pontas1 = [ (sprite1_x, sprite1_y), (sprite1_x + largura1 - 1, sprite1_y),
                     (sprite1_x, sprite1_y + altura1 - 1), (sprite1_x + largura1 - 1, sprite1_y + altura1 - 1) ]
@@ -80,8 +80,8 @@ def jogo():
                 return True
         return False
 
-    # Mostra a tela, suas bordas * e os acertos
-    def mostrar_tela(tela, altura, largura):
+    # Mostra as bordas * da tela
+    def mostrar_tela(tela,altura,largura):
         print("*" * (largura + 2))
         for x in range(altura):
             print("*", end='')
@@ -90,7 +90,7 @@ def jogo():
             print("*")
         print("*" * (largura + 2))
 
-    #na sprite itera por cada linha e caractere e mostra na tela 
+    #Na sprite, itera por cada linha e caractere e mostra na tela 
     def mostrar_sprite(sprite,sprite_x,sprite_y):
         nonlocal tela
         for y, linha in enumerate(sprite):
@@ -111,18 +111,20 @@ def jogo():
     # Retorna True caso o tiro acerte em um inimigo
     def verifica_colisao(tiro_x, inimigos,inimigos_horizontais):
         nonlocal dinheiros, vida_inimigos, vida_inimigos_horizontais, dano, tiro_y
+
         for i in range(len(inimigos) -1, -1, -1):
             if colide_elementos(inimigos[i][0],inimigos[i][1],5,3,tiro_x,tiro_y,1,1):
                 vida_inimigos[i] -= dano
-                if vida_inimigos[i] == 0:
+                if vida_inimigos[i] <= 0:
                     inimigos.pop(i)
                     vida_inimigos.pop(i)
                     dinheiros.append([tiro_x,tiro_y])
                 tiro_y = -1
+
         for i in range(len(inimigos_horizontais) -1, -1, -1):
             if colide_elementos(inimigos_horizontais[i][0],inimigos_horizontais[i][1],7,4,tiro_x,tiro_y,1,1):
                 vida_inimigos_horizontais[i] -= dano
-                if vida_inimigos_horizontais[i] == 0:
+                if vida_inimigos_horizontais[i] <= 0:
                     inimigos_horizontais.pop(i)
                     vida_inimigos_horizontais.pop(i)
                     dinheiros.append([tiro_x,tiro_y])
@@ -140,19 +142,7 @@ def jogo():
             return dinheiros
         else: return dinheiros
 
-    #retorna True caso o jogador ganhe o jogo
-    def checar_vitoria():
-        esperar = 0
-        galaxia = ""
-        if  inimigos == [] and inimigos_horizontais == [] and onda >= fase * 2:
-            match fase:
-                case 1: galaxia = "a Via Láctea"
-                case 2: galaxia = "Hoag's"
-                case 3: galaxia = "Andrômeda"
-            print(f"Você libertou {galaxia}!")
-            while esperar < 100000000:
-                esperar += 1
-            return True
+
 
     #retorna True caso o jogador perca o jogo por tocar na nave inimiga ou deixar eles chegar em baixo
     def checar_derrota():
@@ -188,10 +178,10 @@ def jogo():
     #função com o WConio2 para receber qualquer entrada
     def entrada_jogador():
         nonlocal aviao_x, aviao_y, tiro_x, tiro_y, altura, largura
-        print(f"a,→ d,← w,↑ s,↓ f=fogo.", f"{moedas }R$  {mostrar_vida(vidas)}")
+        print(f"a,→ d,← w,↑ s,↓ f=fogo.", f"{moedas}R$  {mostrar_vida(vidas)}       ")
         if WConio2.kbhit():
             codigo, simbolo = WConio2.getch()
-            print(codigo, " ", simbolo)  # descobre o codigo da tecla pressionada
+            #print(codigo, " ", simbolo)  # descobre o codigo da tecla pressionada
 
             def aviao_esquerda(aviao_x):
                 if aviao_x > 0:
@@ -249,38 +239,20 @@ def jogo():
         return tiro_y     
     #move os inimigos para baixo
     def mover_inimigos(cont, inimigos):
-        if cont % 50 == 0:
+        if cont % 80 == 0:
             return [(x, y + 1) for (x, y) in inimigos if y + 1 < altura]
         return inimigos
-    
-    #se todos os inimigos forem destruídos,recria as coordenadas em outras posições dependendo da onda atual
-    def novos_inimigos():
-        nonlocal onda
-        onda +=1
-        match onda:
-            case 1:
-                return[(15, 0), (30, 0), (45, 0), (60, 0)],[1,1,1,1],[(0, 5)],[2]
-            case 2:
-                return[(15, 0), (30, 0), (45, 0), (60, 0), (75, 0)],[1,1,1,1,2],[(0, 5)],[2]
-            case 3:
-                return[(15, 0), (30, 0), (45, 0), (60, 0), (75, 0), (90, 0)],[2,2,2,2,2,2],[(0, 5)],[2]
-            case 4:
-                return[(15, 0), (30, 0), (45, 0), (60, 0), (75, 0), (90, 0)],[2,2,2,2,2,2],[(0, 5)],[2]
-            case 5:
-                return[(15, 0), (30, 0), (45, 0), (60, 0), (75, 0), (90, 0)],[2,2,2,2,2,2],[(0, 5)],[2]
-            case 6:
-                return[(15, 0), (30, 0), (45, 0), (60, 0), (75, 0), (90, 0)],[2,2,2,2,2,2],[(0, 5)],[2]
 
     # Mover inimigos horizontais
     def mover_inimigos_horizontais(cont):
         nonlocal inimigos_horizontais, direcao_horizontais
-        VELOCIDADE_HORIZONTAL = 10  # Quanto maior, mais lento
+        VELOCIDADE_HORIZONTAL = 30  # Quanto maior, mais lento
 
         if cont % VELOCIDADE_HORIZONTAL != 0:
             return  # Só move a cada 200 ciclos
-        if len(inimigos_horizontais) > len(direcao_horizontais):
+        while len(inimigos_horizontais) > len(direcao_horizontais):
             direcao_horizontais.append(1)
-        elif len(inimigos_horizontais) < len(direcao_horizontais):
+        while len(inimigos_horizontais) < len(direcao_horizontais):
             direcao_horizontais.pop()
         for i in range(len(inimigos_horizontais)):
             x, y = inimigos_horizontais[i]
@@ -296,7 +268,7 @@ def jogo():
     # Mover tiros dos inimigos para baixo
     def mover_tiros_inimigos():
         nonlocal tiros_inimigos
-        VELOCIDADE_TIRO_INIMIGO = 40  # Quanto maior, mais lento
+        VELOCIDADE_TIRO_INIMIGO = 10  # Quanto maior, mais lento
 
         if cont % VELOCIDADE_TIRO_INIMIGO != 0:
             return  # só move os tiros de vez em quando
@@ -310,7 +282,7 @@ def jogo():
     #move cada moeda para baixo e se ela sumir da tela deleta
     def mover_dinheiros(dinheiros):
         d_filtrados = []
-        if len(dinheiros) <= 0 or cont % 30 != 0:
+        if len(dinheiros) <= 0 or cont % 40 != 0:
             return dinheiros
         else:
             for d in dinheiros:
@@ -324,7 +296,7 @@ def jogo():
     # Inimigos atiram
     def inimigos_atiram():
         nonlocal tiros_inimigos
-        if cont % 1000 == 0:  # Cada ciclos os inimigos atiram
+        if cont % 500 == 0:  # Cada ciclos os inimigos atiram
             for (x, y) in inimigos_horizontais:
                 tiros_inimigos.append((x + 3, y + 3))  # Tiros dos inimigos (para baixo)
 
@@ -353,8 +325,8 @@ def jogo():
         inimigos = mover_inimigos(cont, inimigos)
 
         # Recria inimigos verticais se forem todos destruídos
-        if inimigos == [] and inimigos_horizontais == [] and onda < fase * 2:
-            inimigos,vida_inimigos,inimigos_horizontais,vida_inimigos_horizontais = novos_inimigos()
+        if inimigos == [] and inimigos_horizontais == []:
+            inimigos,vida_inimigos,inimigos_horizontais,vida_inimigos_horizontais = fases.novos_inimigos()
 
         # Mover inimigos horizontais
         mover_inimigos_horizontais(cont)
@@ -370,9 +342,9 @@ def jogo():
         mostrar_tela(tela, altura, largura)
 
         # Verifica vitória
-        if checar_vitoria():
+        if fases.checar_vitoria(inimigos,dinheiros,inimigos_horizontais):
             status.moedas = moedas
-            status.fase = fase + 1
+            status.fase += 1
             status.onda = 0
             trocar_tela.trocar_tela("menu_melhorias")
             break
