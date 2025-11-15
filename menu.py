@@ -1,13 +1,15 @@
 import os
-import WConio2
+import WConio2 # pip install WConio2
 import sprites
 import trocar_tela
 import salvar
 
 def menu():
+
     #função para mudar o local do cursor
     def gotoxy(x, y):
         print(f"\033[{y};{x}H", end='', flush=True)
+
     #função para criar tela(matriz)
     def CriarTela(altura_y, largura_x, tela, item):
         for y in range(altura_y):
@@ -134,9 +136,6 @@ def menu():
     y_seta = 18
     x_seta = 44
     imagemseta = sprites.get_seta()
-    # #estado:opção escolhida
-    # state = ""
-
 
     # cria a tela
     CriarTela(altura_y, largura_x, tela, item)
@@ -174,22 +173,22 @@ def menu():
 
         # se ENTER for apertado e a seta estiver em CONTINUAR
         if codigo == 13 and y_seta == y_continuar:
+            salvar.carregar()
             trocar_tela.trocar_tela("menu_fases")
             break
 
         # se ENTER or apertado e a seta estiver em NOVO JOGO
         if codigo == 13 and y_seta == y_novojogo:
+            salvar.novo_jogo()
             trocar_tela.trocar_tela("menu_fases")
             break
-
+        # se ENTER or apertado e a seta estiver em MELHORIAS
         if codigo == 13 and y_seta == y_melhorias:
             trocar_tela.trocar_tela("menu_melhorias")
             break
-
+        # se ENTER or apertado e a seta estiver em SALVAR
         if codigo == 13 and y_seta == y_salvar:
-            #SALVA
-            break
+            salvar.salvar()
 
         #== MUDA A POSICAO DA SETA SEGUNDO INPUT ==
         y_seta = MudaCoordenadaYSetaIndicadora(codigo, y_seta, x_seta, y_continuar, y_melhorias)
-#menu()
